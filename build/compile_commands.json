@@ -1,0 +1,7 @@
+[
+{
+  "directory": "/home/lane/gd/build",
+  "command": "/usr/bin/g++  -isystem /usr/include/opencv4 -g -o CMakeFiles/gd.dir/src/main.cpp.o -c /home/lane/gd/src/main.cpp",
+  "file": "/home/lane/gd/src/main.cpp"
+}
+]

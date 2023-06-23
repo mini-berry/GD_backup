@@ -1,0 +1,3 @@
+/home/lane/gd/build/CMakeFiles/gd.dir
+/home/lane/gd/build/CMakeFiles/edit_cache.dir
+/home/lane/gd/build/CMakeFiles/rebuild_cache.dir
