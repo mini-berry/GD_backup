@@ -56,6 +56,10 @@
 			[
 				{
 					"backtrace" : 3,
+					"path" : "/home/lane/gd/include"
+				},
+				{
+					"backtrace" : 3,
 					"isSystem" : true,
 					"path" : "/usr/include/opencv4"
 				}
@@ -63,7 +67,8 @@
 			"language" : "CXX",
 			"sourceIndexes" : 
 			[
-				0
+				0,
+				1
 			]
 		}
 	],
@@ -366,7 +371,8 @@
 			"name" : "Source Files",
 			"sourceIndexes" : 
 			[
-				0
+				0,
+				1
 			]
 		}
 	],
@@ -376,6 +382,12 @@
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
 			"path" : "src/main.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "src/user.cpp",
 			"sourceGroupIndex" : 0
 		}
 	],

@@ -251,4 +251,12 @@ CMakeFiles/gd.dir/src/main.cpp.o: /home/lane/gd/src/main.cpp \
  /usr/include/c++/11/bits/unique_lock.h \
  /usr/include/opencv4/opencv2/core/optim.hpp \
  /usr/include/opencv4/opencv2/core/ovx.hpp \
- /usr/include/opencv4/opencv2/core/cvdef.h /usr/include/c++/11/iostream
+ /usr/include/opencv4/opencv2/core/cvdef.h \
+ /usr/include/opencv4/opencv2/highgui/highgui.hpp \
+ /usr/include/opencv4/opencv2/highgui.hpp \
+ /usr/include/opencv4/opencv2/imgcodecs.hpp \
+ /usr/include/opencv4/opencv2/videoio.hpp \
+ /usr/include/opencv4/opencv2/imgproc/imgproc.hpp \
+ /usr/include/opencv4/opencv2/imgproc.hpp \
+ /usr/include/opencv4/opencv2/imgproc/segmentation.hpp \
+ /home/lane/gd/include/user.hpp /usr/include/c++/11/iostream

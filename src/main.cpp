@@ -1,12 +1,59 @@
 #include <opencv2/core/core.hpp>
-// #include <opencv2/highgui/highgui.hpp>
-// #include <opencv2/imgproc/imgproc.hpp>
+#include <opencv2/highgui/highgui.hpp>
+#include <opencv2/imgproc/imgproc.hpp>
+#include "user.hpp"
 #include <iostream>
 
 using namespace std;
 using namespace cv;
 
 int main(int argc, char **argv)
-{ 
-    cout << "Helloworld1." << endl;
+{
+    Mat src = imread("/home/lane/gd/bin/map.png");
+    resize(src, src, Size(1000, 1000));
+
+    while (user::perspective_fix(src) != 0)
+    {
+        cout << "getting new img" << endl;
+        waitKey();
+        src = imread("/home/lane/gd/bin/map.png");
+        resize(src, src, Size(1000, 1000));
+    }
+
+    int margin = 115;
+    Rect rect(margin, margin, 1000 - 2 * margin, 1000 - 2 * margin);
+    src = src(rect);
+
+    int map[21][21] = {0};
+    user::generate_map(map);
+
+    Mat src_without_treasure;
+    user::find_treasure(src, map, src_without_treasure);
+    user::block_scan(src_without_treasure);
+    
+    for (int i = 0; i < 21; i++)
+    {
+        for (int j = 0; j < 21; j++)
+        {
+            switch (map[i][j])
+            {
+            case 0:
+                cout << "  ";
+                break;
+            case 1:
+                cout << "■ ";
+                break;
+            case 2:
+                cout << "□ ";
+                break;
+            default:
+                cout << "  ";
+                break;
+            }
+        }
+        cout << endl;
+    }
+
+    imshow("result", src);
+    waitKey();
 }

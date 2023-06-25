@@ -1,5 +1,6 @@
-CMakeFiles/gd.dir/src/main.cpp.o: /home/lane/gd/src/main.cpp \
- /usr/include/stdc-predef.h /usr/include/opencv4/opencv2/core/core.hpp \
+CMakeFiles/gd.dir/src/user.cpp.o: /home/lane/gd/src/user.cpp \
+ /usr/include/stdc-predef.h /home/lane/gd/include/user.hpp \
+ /usr/include/opencv4/opencv2/core/core.hpp \
  /usr/include/opencv4/opencv2/core.hpp \
  /usr/include/opencv4/opencv2/core/cvdef.h \
  /usr/include/opencv4/opencv2/core/version.hpp /usr/include/c++/11/limits \
@@ -259,4 +260,4 @@ CMakeFiles/gd.dir/src/main.cpp.o: /home/lane/gd/src/main.cpp \
  /usr/include/opencv4/opencv2/imgproc/imgproc.hpp \
  /usr/include/opencv4/opencv2/imgproc.hpp \
  /usr/include/opencv4/opencv2/imgproc/segmentation.hpp \
- /home/lane/gd/include/user.hpp /usr/include/c++/11/iostream
+ /usr/include/c++/11/iostream

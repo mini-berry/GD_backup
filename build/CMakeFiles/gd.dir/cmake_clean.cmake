@@ -3,6 +3,8 @@ file(REMOVE_RECURSE
   "../bin/gd.pdb"
   "CMakeFiles/gd.dir/src/main.cpp.o"
   "CMakeFiles/gd.dir/src/main.cpp.o.d"
+  "CMakeFiles/gd.dir/src/user.cpp.o"
+  "CMakeFiles/gd.dir/src/user.cpp.o.d"
 )
 
 # Per-language clean rules from dependency scanning.
