@@ -113,15 +113,26 @@ void user::find_treasure(Mat &src, int (*map)[21], Mat &src_without_treasure)
     for (int i = 0; i < treasure_pos.size(); i++)
         map[treasure_pos[i][1] * 2 + 1][treasure_pos[i][0] * 2 + 1] = 2;
 }
-void user::block_scan(Mat &src_without_treasure)
+void user::block_scan(Mat &src_without_treasure, int (*map)[21])
 {
     for (int i = 0; i < 19; i++)
     {
         for (int j = 0; j < 19; j++)
         {
             Rect rect(20 + 40 * i, 20 + 40 * j, 40, 40);
-            // imshow("rect", src(rect));
-            // waitKey();
+            vector<vector<Point>> contours;
+            vector<Vec4i> hierarchy;
+            findContours(src_without_treasure(rect), contours, hierarchy, RETR_TREE, CHAIN_APPROX_SIMPLE);
+            if (contours.size() == 1)
+            {
+                if (contourArea(contours[0]) < 1400)
+                    map[j + 1][i + 1] = 1;
+            }
+            else
+            {
+                map[j + 1][i + 1] = 1;
+            }
         }
     }
+    cout << endl;
 }

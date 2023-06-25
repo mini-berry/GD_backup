@@ -29,8 +29,8 @@ int main(int argc, char **argv)
 
     Mat src_without_treasure;
     user::find_treasure(src, map, src_without_treasure);
-    user::block_scan(src_without_treasure);
-    
+    user::block_scan(src_without_treasure, map);
+
     for (int i = 0; i < 21; i++)
     {
         for (int j = 0; j < 21; j++)
