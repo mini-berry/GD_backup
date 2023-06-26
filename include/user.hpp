@@ -4,6 +4,7 @@
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
+#include "dijkstra.hpp"
 
 using namespace cv;
 using namespace std;
@@ -14,5 +15,6 @@ namespace user
     void generate_map(int (*map)[21]);
     void find_treasure(Mat &src, int (*map)[21], Mat &src_without_treasure);
     void block_scan(Mat &src_without_treasure, int (*map)[21]);
+    vector<array<int,2>> point_order(int (*map)[21]);
 }
 #endif

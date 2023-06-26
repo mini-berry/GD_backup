@@ -13,7 +13,6 @@ Point2f get_center_point(vector<T> contours_i)
     }
     return Point2f(x / contours_i.size(), y / contours_i.size());
 }
-
 int user::perspective_fix(Mat &src)
 {
     Mat src_without_treasure;
@@ -135,4 +134,26 @@ void user::block_scan(Mat &src_without_treasure, int (*map)[21])
         }
     }
     cout << endl;
+}
+vector<array<int, 2>> user::point_order(int (*map)[21])
+{
+    vector<vector<int>> maze;
+    vector<array<int, 2>> treasure;
+    for (int i = 0; i < 21; i++)
+    {
+        vector<int> vi;
+        for (int j = 0; j < 21; j++)
+        {
+            if (map[i][j] == 2)
+            {
+                map[i][j] = 0;
+                array<int, 2> treasure_pos = {i, j};
+                treasure.push_back(treasure_pos);
+            }
+            vi.push_back(map[i][j]);
+        }
+        maze.push_back(vi);
+    }
+    user::dijkstra(maze);
+    return treasure;
 }

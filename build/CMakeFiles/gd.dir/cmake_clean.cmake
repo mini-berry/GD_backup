@@ -1,6 +1,10 @@
 file(REMOVE_RECURSE
   "../bin/gd"
   "../bin/gd.pdb"
+  "CMakeFiles/gd.dir/src/BFS.cpp.o"
+  "CMakeFiles/gd.dir/src/BFS.cpp.o.d"
+  "CMakeFiles/gd.dir/src/dijkstra.cpp.o"
+  "CMakeFiles/gd.dir/src/dijkstra.cpp.o.d"
   "CMakeFiles/gd.dir/src/main.cpp.o"
   "CMakeFiles/gd.dir/src/main.cpp.o.d"
   "CMakeFiles/gd.dir/src/user.cpp.o"

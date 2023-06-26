@@ -53,7 +53,7 @@ int main(int argc, char **argv)
         }
         cout << endl;
     }
-
+    vector<array<int, 2>> sequence = user::point_order(map);
     imshow("result", src);
     waitKey();
 }

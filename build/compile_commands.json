@@ -8,5 +8,15 @@
   "directory": "/home/lane/gd/build",
   "command": "/usr/bin/g++  -I/home/lane/gd/include -isystem /usr/include/opencv4 -g -o CMakeFiles/gd.dir/src/user.cpp.o -c /home/lane/gd/src/user.cpp",
   "file": "/home/lane/gd/src/user.cpp"
+},
+{
+  "directory": "/home/lane/gd/build",
+  "command": "/usr/bin/g++  -I/home/lane/gd/include -isystem /usr/include/opencv4 -g -o CMakeFiles/gd.dir/src/dijkstra.cpp.o -c /home/lane/gd/src/dijkstra.cpp",
+  "file": "/home/lane/gd/src/dijkstra.cpp"
+},
+{
+  "directory": "/home/lane/gd/build",
+  "command": "/usr/bin/g++  -I/home/lane/gd/include -isystem /usr/include/opencv4 -g -o CMakeFiles/gd.dir/src/BFS.cpp.o -c /home/lane/gd/src/BFS.cpp",
+  "file": "/home/lane/gd/src/BFS.cpp"
 }
 ]
