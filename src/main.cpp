@@ -1,6 +1,6 @@
-#include <opencv2/core/core.hpp>
-#include <opencv2/highgui/highgui.hpp>
-#include <opencv2/imgproc/imgproc.hpp>
+#include <opencv4/opencv2/core/core.hpp>
+#include <opencv4/opencv2/highgui/highgui.hpp>
+#include <opencv4/opencv2/imgproc/imgproc.hpp>
 #include "user.hpp"
 #include <iostream>
 
@@ -23,7 +23,7 @@ int main(int argc, char **argv)
     int margin = 115;
     Rect rect(margin, margin, 1000 - 2 * margin, 1000 - 2 * margin);
     src = src(rect);
-    
+
     // 地图内所有点均为i行j列，但涉及x,y坐标的要反过来。
     vector<vector<int>> map(21, vector<int>(21, 0));
     user::generate_map(map);
@@ -66,7 +66,7 @@ int main(int argc, char **argv)
         }
         cout << endl;
     }
-    vector<array<int, 2>> sequence = user::point_order(map, treasure_pos);
+    vector<int> sequence = user::point_order(map, treasure_pos);
     imshow("result", src);
     waitKey();
 }

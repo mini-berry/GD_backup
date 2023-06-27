@@ -59,12 +59,12 @@ int length(int start, int end, vector<vector<int>> map, vector<array<int, 2>> tr
     return -1;
 }
 
-int user::BFS(vector<vector<int>> &map, vector<array<int, 2>> &treasure_pos)
+vector<int> user::BFS(vector<vector<int>> &map, vector<array<int, 2>> &treasure_pos)
 {
     // 把起始点加入
     treasure_pos.insert(treasure_pos.begin(), {19, 0});
     treasure_pos.push_back({1, 20});
-
+    // 遍历节约算力
     vector<vector<int>> graph;
     {
         for (int i = 0; i < treasure_pos.size(); i++)
@@ -75,16 +75,49 @@ int user::BFS(vector<vector<int>> &map, vector<array<int, 2>> &treasure_pos)
             graph.push_back(subgraph);
         }
     }
-    graph[0][treasure_pos.size()-1] = -1;
-    graph[treasure_pos.size()-1][0] = -1;
-
-    for (int i = 0; i < treasure_pos.size(); i++)
+    graph[0][treasure_pos.size() - 1] = -1;
+    graph[treasure_pos.size() - 1][0] = -1;
+    vector<int> numbers;
+    for (int i = 1; i < treasure_pos.size() - 1; i++)
     {
-        for (int j = 0; j < treasure_pos.size(); j++)
-        {
-            cout << graph[i][j] << " ";
-        }
-        cout << endl;
+        numbers.push_back(i);
     }
-    return 0;
+    sort(numbers.begin(), numbers.end());
+    // 输出初始排列
+    int min_length = 0;
+    int times = 0;
+    vector<int> min_order;
+    
+    do
+    {
+        vector<int> order;
+        for (int number : numbers)
+        {
+            order.push_back(number);
+        }
+        // 0到1
+        int sum_length = graph[0][order[0]];
+        for (int i = 0; i < numbers.size() - 1; i++)
+        {
+            sum_length += graph[order[i]][order[i + 1]];
+        }
+        sum_length += graph[order[numbers.size() - 1]][treasure_pos.size() - 1];
+        if (min_length == 0)
+        {
+            min_length = sum_length;
+            min_order = order;
+        }
+        if (min_length > sum_length)
+        {
+            min_length = sum_length;
+            min_order = order;
+        }
+        if (times++ > 600000)
+            break;
+    } while (next_permutation(numbers.begin(), numbers.end()));
+    cout << "最短路径为:" << min_length << " ";
+    cout << "循环次数:" << times << endl;
+    for (int i = 0; i < min_order.size(); i++)
+        cout << min_order[i] << " ";
+    return min_order;
 }
