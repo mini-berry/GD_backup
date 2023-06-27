@@ -161,6 +161,5 @@ CMakeFiles/gd.dir/src/dijkstra.cpp.o: /home/lane/gd/src/dijkstra.cpp \
  /usr/include/linux/limits.h \
  /usr/include/x86_64-linux-gnu/bits/posix2_lim.h \
  /usr/include/x86_64-linux-gnu/bits/xopen_lim.h \
- /usr/include/x86_64-linux-gnu/bits/uio_lim.h /usr/include/c++/11/array \
- /usr/include/c++/11/utility /usr/include/c++/11/bits/stl_relops.h \
+ /usr/include/x86_64-linux-gnu/bits/uio_lim.h \
  /home/lane/gd/include/BFS.hpp

@@ -55,7 +55,8 @@
         "streambuf": "cpp",
         "thread": "cpp",
         "typeinfo": "cpp",
-        "queue": "cpp"
+        "queue": "cpp",
+        "climits": "cpp"
     },
     "cmake.configureOnOpen": false
 }

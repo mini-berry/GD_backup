@@ -2,6 +2,7 @@
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 #include "user.hpp"
+#include "dijkstra.hpp"
 #include <iostream>
 
 using namespace std;
@@ -24,36 +25,47 @@ int main(int argc, char **argv)
     Rect rect(margin, margin, 1000 - 2 * margin, 1000 - 2 * margin);
     src = src(rect);
 
-    int map[21][21] = {0};
+    vector<vector<int>> map(21, vector<int>(21, 0));
     user::generate_map(map);
 
     Mat src_without_treasure;
-    user::find_treasure(src, map, src_without_treasure);
+    vector<array<int, 2>> treasure_pos;
+    user::find_treasure(src, src_without_treasure, treasure_pos);
+
     user::block_scan(src_without_treasure, map);
 
     for (int i = 0; i < 21; i++)
     {
         for (int j = 0; j < 21; j++)
         {
-            switch (map[i][j])
+            int flag = 0;
+            for (int k = 0; k < treasure_pos.size(); k++)
             {
-            case 0:
-                cout << "  ";
-                break;
-            case 1:
-                cout << "■ ";
-                break;
-            case 2:
-                cout << "□ ";
-                break;
-            default:
-                cout << "  ";
-                break;
+                if (j == treasure_pos[k][0] & i == treasure_pos[k][1])
+                {
+                    cout << "□ ";
+                    flag = 1;
+                }
+            }
+            if (flag == 0)
+            {
+                switch (map[i][j])
+                {
+                case 0:
+                    cout << "  ";
+                    break;
+                case 1:
+                    cout << "■ ";
+                    break;
+                default:
+                    cout << "  ";
+                    break;
+                }
             }
         }
         cout << endl;
     }
-    vector<array<int, 2>> sequence = user::point_order(map);
+    vector<array<int, 2>> sequence = user::point_order(map, treasure_pos);
     imshow("result", src);
     waitKey();
 }

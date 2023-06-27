@@ -74,7 +74,7 @@ int user::perspective_fix(Mat &src)
     warpPerspective(src, src, M, Size(1000, 1000));
     return 0;
 }
-void user::generate_map(int (*map)[21])
+void user::generate_map(vector<vector<int>> &map)
 {
     for (int i = 0; i < 21; i++)
     {
@@ -86,9 +86,8 @@ void user::generate_map(int (*map)[21])
     map[1][20] = 0;
     map[19][0] = 0;
 }
-void user::find_treasure(Mat &src, int (*map)[21], Mat &src_without_treasure)
+void user::find_treasure(Mat &src, Mat &src_without_treasure, vector<array<int, 2>> &treasure_pos)
 {
-    vector<array<int, 2>> treasure_pos;
     resize(src, src, Size(800, 800));
 
     cvtColor(src, src_without_treasure, COLOR_BGR2GRAY);
@@ -102,17 +101,15 @@ void user::find_treasure(Mat &src, int (*map)[21], Mat &src_without_treasure)
     {
         if (boundingRect(contours[i]).width<47 & contourArea(contours[i]) < 900 & contourArea(contours[i])> 800 & ((float)boundingRect(contours[i]).width) / ((float)boundingRect(contours[i]).height) < 1.1 & ((float)boundingRect(contours[i]).width) / ((float)boundingRect(contours[i]).height) > 0.9)
         {
-            drawContours(src, contours, i, Scalar(255, 0, 0), 2);
+            drawContours(src, contours, i, Scalar(0, 0, 255), 2);
             drawContours(src_without_treasure, contours, i, Scalar(255, 255, 255), -1);
-            array<int, 2> pos = {((int)get_center_point(contours[i]).x) / 80, ((int)get_center_point(contours[i]).y) / 80};
+            array<int, 2> pos = {((int)get_center_point(contours[i]).x) / 80 * 2 + 1, ((int)get_center_point(contours[i]).y) / 80 * 2 + 1};
             treasure_pos.push_back(pos);
         }
     }
     cout << "找到宝藏点数：" << treasure_pos.size() << endl;
-    for (int i = 0; i < treasure_pos.size(); i++)
-        map[treasure_pos[i][1] * 2 + 1][treasure_pos[i][0] * 2 + 1] = 2;
 }
-void user::block_scan(Mat &src_without_treasure, int (*map)[21])
+void user::block_scan(Mat &src_without_treasure, vector<vector<int>> &map)
 {
     for (int i = 0; i < 19; i++)
     {
@@ -135,25 +132,8 @@ void user::block_scan(Mat &src_without_treasure, int (*map)[21])
     }
     cout << endl;
 }
-vector<array<int, 2>> user::point_order(int (*map)[21])
+
+vector<array<int, 2>> user::point_order(vector<vector<int>> &map, vector<array<int, 2>> &treasure_pos)
 {
-    vector<vector<int>> maze;
-    vector<array<int, 2>> treasure;
-    for (int i = 0; i < 21; i++)
-    {
-        vector<int> vi;
-        for (int j = 0; j < 21; j++)
-        {
-            if (map[i][j] == 2)
-            {
-                map[i][j] = 0;
-                array<int, 2> treasure_pos = {i, j};
-                treasure.push_back(treasure_pos);
-            }
-            vi.push_back(map[i][j]);
-        }
-        maze.push_back(vi);
-    }
-    user::dijkstra(maze);
-    return treasure;
+    return treasure_pos;
 }

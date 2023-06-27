@@ -1,5 +1,5 @@
-CMakeFiles/gd.dir/src/dijkstra.cpp.o: /home/lane/gd/src/dijkstra.cpp \
- /usr/include/stdc-predef.h /home/lane/gd/include/dijkstra.hpp \
+CMakeFiles/gd.dir/src/BFS.cpp.o: /home/lane/gd/src/BFS.cpp \
+ /usr/include/stdc-predef.h /home/lane/gd/include/BFS.hpp \
  /usr/include/c++/11/iostream \
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/os_defines.h \
@@ -153,14 +153,4 @@ CMakeFiles/gd.dir/src/dijkstra.cpp.o: /home/lane/gd/src/dijkstra.cpp \
  /usr/include/c++/11/deque /usr/include/c++/11/bits/stl_deque.h \
  /usr/include/c++/11/bits/deque.tcc /usr/include/c++/11/bits/stl_heap.h \
  /usr/include/c++/11/bits/stl_queue.h \
- /usr/include/c++/11/bits/uses_allocator.h /usr/include/c++/11/climits \
- /usr/lib/gcc/x86_64-linux-gnu/11/include/limits.h \
- /usr/lib/gcc/x86_64-linux-gnu/11/include/syslimits.h \
- /usr/include/limits.h /usr/include/x86_64-linux-gnu/bits/posix1_lim.h \
- /usr/include/x86_64-linux-gnu/bits/local_lim.h \
- /usr/include/linux/limits.h \
- /usr/include/x86_64-linux-gnu/bits/posix2_lim.h \
- /usr/include/x86_64-linux-gnu/bits/xopen_lim.h \
- /usr/include/x86_64-linux-gnu/bits/uio_lim.h /usr/include/c++/11/array \
- /usr/include/c++/11/utility /usr/include/c++/11/bits/stl_relops.h \
- /home/lane/gd/include/BFS.hpp
+ /usr/include/c++/11/bits/uses_allocator.h

@@ -398,6 +398,9 @@ CMakeFiles/gd.dir/src/dijkstra.cpp.o: ../src/dijkstra.cpp \
   /usr/include/x86_64-linux-gnu/bits/posix2_lim.h \
   /usr/include/x86_64-linux-gnu/bits/xopen_lim.h \
   /usr/include/x86_64-linux-gnu/bits/uio_lim.h \
+  /usr/include/c++/11/array \
+  /usr/include/c++/11/utility \
+  /usr/include/c++/11/bits/stl_relops.h \
   ../include/BFS.hpp
 
 CMakeFiles/gd.dir/src/main.cpp.o: ../src/main.cpp \
@@ -723,6 +726,8 @@ CMakeFiles/gd.dir/src/main.cpp.o: ../src/main.cpp \
   /usr/include/c++/11/bits/stl_deque.h \
   /usr/include/c++/11/bits/deque.tcc \
   /usr/include/c++/11/bits/stl_queue.h \
+  ../include/BFS.hpp \
+  ../include/dijkstra.hpp \
   ../include/BFS.hpp
 
 CMakeFiles/gd.dir/src/user.cpp.o: ../src/user.cpp \

@@ -5,14 +5,14 @@
 #include <vector>
 #include <queue>
 #include <climits>
+#include <array>
 #include "BFS.hpp"
-
 
 using namespace std;
 
 namespace user
 {
-    int dijkstra(vector<vector<int>> maze);
+    vector<array<int, 2>> dijkstra(vector<vector<int>> &maze, vector<array<int, 2>> &treasure);
 }
 
 #endif

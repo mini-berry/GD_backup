@@ -45,22 +45,33 @@ vector<int> dijkstra_path(const Graph &graph, int source)
     return distances;
 }
 
-int user::dijkstra(vector<vector<int>> maze)
+vector<array<int, 2>> user::dijkstra(vector<vector<int>> &maze, vector<array<int, 2>> &treasure)
 {
     // 创建一个示例图
     Graph graph;
-    graph.numVertices = 6;
-    graph.adjList.resize(graph.numVertices);
+    graph.numVertices = treasure.size() + 2;
 
+    graph.adjList.resize(graph.numVertices);
+    cout << treasure.size();
     // 添加边
-    graph.adjList[0].push_back({1, 2});
-    graph.adjList[0].push_back({2, 4});
-    graph.adjList[1].push_back({2, 1});
-    graph.adjList[1].push_back({3, 7});
-    graph.adjList[2].push_back({3, 3});
-    graph.adjList[2].push_back({4, 2});
-    graph.adjList[3].push_back({4, 5});
-    graph.adjList[4].push_back({5, 3});
+    for (int i = 0; i < treasure.size() + 1; i++)
+    {
+        if (i == 0)
+            for (int j = 1; j < treasure.size() + 1; j++)
+                graph.adjList[0].push_back({j, 1});
+        else
+        {
+            if (i == treasure.size() + 1)
+                for (int j = 1; j < treasure.size() + 1; j++)
+                    graph.adjList[treasure.size() + 1].push_back({j, 1});
+            else
+            {
+                for (int j = 1; j < treasure.size() + 1; j++)
+                    if (j != i)
+                        graph.adjList[i].push_back({j, 1});
+            }
+        }
+    }
 
     int source = 0;
     vector<int> shortestDistances = dijkstra_path(graph, source);
@@ -70,6 +81,5 @@ int user::dijkstra(vector<vector<int>> maze)
     {
         cout << "Shortest distance from node " << source << " to " << i << " is " << shortestDistances[i] << endl;
     }
-
-    return 0;
+    return treasure;
 }
