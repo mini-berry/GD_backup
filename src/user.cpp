@@ -103,7 +103,7 @@ void user::find_treasure(Mat &src, Mat &src_without_treasure, vector<array<int, 
         {
             drawContours(src, contours, i, Scalar(0, 0, 255), 2);
             drawContours(src_without_treasure, contours, i, Scalar(255, 255, 255), -1);
-            array<int, 2> pos = {((int)get_center_point(contours[i]).x) / 80 * 2 + 1, ((int)get_center_point(contours[i]).y) / 80 * 2 + 1};
+            array<int, 2> pos = {((int)get_center_point(contours[i]).y) / 80 * 2 + 1, ((int)get_center_point(contours[i]).x) / 80 * 2 + 1};
             treasure_pos.push_back(pos);
         }
     }
@@ -115,18 +115,18 @@ void user::block_scan(Mat &src_without_treasure, vector<vector<int>> &map)
     {
         for (int j = 0; j < 19; j++)
         {
-            Rect rect(20 + 40 * i, 20 + 40 * j, 40, 40);
+            Rect rect(20 + 40 * j, 20 + 40 * i, 40, 40);
             vector<vector<Point>> contours;
             vector<Vec4i> hierarchy;
             findContours(src_without_treasure(rect), contours, hierarchy, RETR_TREE, CHAIN_APPROX_SIMPLE);
             if (contours.size() == 1)
             {
                 if (contourArea(contours[0]) < 1400)
-                    map[j + 1][i + 1] = 1;
+                    map[i + 1][j + 1] = 1;
             }
             else
             {
-                map[j + 1][i + 1] = 1;
+                map[i + 1][j + 1] = 1;
             }
         }
     }
@@ -135,6 +135,6 @@ void user::block_scan(Mat &src_without_treasure, vector<vector<int>> &map)
 
 vector<array<int, 2>> user::point_order(vector<vector<int>> &map, vector<array<int, 2>> &treasure_pos)
 {
-    user::BFS();
+    user::BFS(map, treasure_pos);
     return treasure_pos;
 }

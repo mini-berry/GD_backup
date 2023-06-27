@@ -23,7 +23,8 @@ int main(int argc, char **argv)
     int margin = 115;
     Rect rect(margin, margin, 1000 - 2 * margin, 1000 - 2 * margin);
     src = src(rect);
-
+    
+    // 地图内所有点均为i行j列，但涉及x,y坐标的要反过来。
     vector<vector<int>> map(21, vector<int>(21, 0));
     user::generate_map(map);
 
@@ -40,12 +41,13 @@ int main(int argc, char **argv)
             int flag = 0;
             for (int k = 0; k < treasure_pos.size(); k++)
             {
-                if (j == treasure_pos[k][0] & i == treasure_pos[k][1])
+                if (i == treasure_pos[k][0] & j == treasure_pos[k][1])
                 {
                     cout << "□ ";
                     flag = 1;
                 }
             }
+
             if (flag == 0)
             {
                 switch (map[i][j])
@@ -65,7 +67,6 @@ int main(int argc, char **argv)
         cout << endl;
     }
     vector<array<int, 2>> sequence = user::point_order(map, treasure_pos);
-
-    // imshow("result", src);
-    // waitKey();
+    imshow("result", src);
+    waitKey();
 }

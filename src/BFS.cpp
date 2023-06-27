@@ -1,85 +1,90 @@
 #include "BFS.hpp"
 
-struct Point {
-    int row;
-    int col;
-
-    Point(int r, int c) : row(r), col(c) {}
-};
-
-bool isValid(int row, int col, int numRows, int numCols, const std::vector<std::vector<char>>& maze) {
-    return row >= 0 && row < numRows && col >= 0 && col < numCols && maze[row][col] != '#';
+bool isValid(int x, int y, int rows, int cols, const std::vector<std::vector<int>> &map)
+{
+    return x >= 0 && x < rows && y >= 0 && y < cols && map[x][y] == 0;
 }
 
-int findShortestPath(const std::vector<std::vector<char>>& maze, const std::vector<Point>& targets, Point start) {
-    int numRows = maze.size();
-    int numCols = maze[0].size();
-    int numTargets = targets.size();
+int length(int start, int end, vector<vector<int>> map, vector<array<int, 2>> treasure_pos)
+{
+    if (start == end)
+        return 0;
+    else
+    {
+        int rows = map.size();
+        int cols = map[0].size();
+        queue<array<int, 2>> q;
+        vector<vector<bool>> visited(rows, vector<bool>(cols, false));
+        // 将起始点加入队列并标记为已访问
+        q.push(treasure_pos[start]);
+        visited[treasure_pos[start][0]][treasure_pos[start][1]] = true;
 
-    std::vector<std::vector<bool>> visited(numRows, std::vector<bool>(numCols, false));
+        int distance = 0;
 
-    std::queue<Point> queue;
-    queue.push(start);
-    visited[start.row][start.col] = true;
+        while (!q.empty())
+        {
+            int size = q.size();
 
-    int steps = 0;
-    int targetsFound = 0;
+            // 遍历当前层的所有点
+            for (int i = 0; i < size; i++)
+            {
+                array<int, 2> current = q.front();
+                q.pop();
 
-    while (!queue.empty()) {
-        int size = queue.size();
+                // 检查是否到达目标点
+                if (current[0] == treasure_pos[end][0] && current[1] == treasure_pos[end][1])
+                {
+                    return distance;
+                }
 
-        for (int i = 0; i < size; ++i) {
-            Point curr = queue.front();
-            queue.pop();
+                // 尝试四个方向移动
+                int dx[] = {0, 0, 1, -1};
+                int dy[] = {1, -1, 0, 0};
+                for (int j = 0; j < 4; ++j)
+                {
+                    int newX = current[0] + dx[j];
+                    int newY = current[1] + dy[j];
 
-            if (maze[curr.row][curr.col] == 'T') {
-                targetsFound++;
-                if (targetsFound == numTargets) {
-                    return steps;
+                    // 如果新位置有效且未访问过，则加入队列并标记为已访问
+                    if (isValid(newX, newY, rows, cols, map) && !visited[newX][newY])
+                    {
+                        q.push({newX, newY});
+                        visited[newX][newY] = true;
+                    }
                 }
             }
-
-            // 尝试四个方向的移动：上、下、左、右
-            int dr[] = {-1, 1, 0, 0};
-            int dc[] = {0, 0, -1, 1};
-
-            for (int j = 0; j < 4; ++j) {
-                int newRow = curr.row + dr[j];
-                int newCol = curr.col + dc[j];
-
-                if (isValid(newRow, newCol, numRows, numCols, maze) && !visited[newRow][newCol]) {
-                    queue.push(Point(newRow, newCol));
-                    visited[newRow][newCol] = true;
-                }
-            }
+            distance++;
         }
-
-        steps++;
     }
-
-    // 如果无法找到所有目标点，则返回一个特殊值表示无解
     return -1;
 }
 
-int user::BFS() {
-    std::vector<std::vector<char>> maze = {
-        {'S', '.', '#', '#', '.', '.'},
-        {'.', '.', '.', '#', '.', '#'},
-        {'.', '#', '.', '.', '.', '#'},
-        {'.', '#', '#', '#', '.', '.'},
-        {'.', '#', 'T', '.', '#', '.'},
-    };
+int user::BFS(vector<vector<int>> &map, vector<array<int, 2>> &treasure_pos)
+{
+    // 把起始点加入
+    treasure_pos.insert(treasure_pos.begin(), {19, 0});
+    treasure_pos.push_back({1, 20});
 
-    std::vector<Point> targets = {Point(4, 2)};
-    Point start(0, 0);
-
-    int shortestPathLength = findShortestPath(maze, targets, start);
-
-    if (shortestPathLength != -1) {
-        std::cout << "Shortest path length: " << shortestPathLength << std::endl;
-    } else {
-        std::cout << "No path found!" << std::endl;
+    vector<vector<int>> graph;
+    {
+        for (int i = 0; i < treasure_pos.size(); i++)
+        {
+            vector<int> subgraph;
+            for (int j = 0; j < treasure_pos.size(); j++)
+                subgraph.push_back(length(i, j, map, treasure_pos));
+            graph.push_back(subgraph);
+        }
     }
+    graph[0][treasure_pos.size()-1] = -1;
+    graph[treasure_pos.size()-1][0] = -1;
 
+    for (int i = 0; i < treasure_pos.size(); i++)
+    {
+        for (int j = 0; j < treasure_pos.size(); j++)
+        {
+            cout << graph[i][j] << " ";
+        }
+        cout << endl;
+    }
     return 0;
 }
