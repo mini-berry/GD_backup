@@ -135,5 +135,6 @@ void user::block_scan(Mat &src_without_treasure, vector<vector<int>> &map)
 
 vector<array<int, 2>> user::point_order(vector<vector<int>> &map, vector<array<int, 2>> &treasure_pos)
 {
+    user::BFS();
     return treasure_pos;
 }

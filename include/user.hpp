@@ -5,7 +5,7 @@
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 #include <array>
-#include "dijkstra.hpp"
+#include "BFS.hpp"
 
 using namespace cv;
 using namespace std;

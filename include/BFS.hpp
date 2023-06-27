@@ -2,15 +2,14 @@
 #define __BFS_HPP__
 
 #include <iostream>
-#include <vector>
 #include <queue>
-
+#include <vector>
 
 using namespace std;
 
 namespace user
 {
-    int BFS(vector<vector<int>> maze);
+    int BFS();
 }
 
 #endif

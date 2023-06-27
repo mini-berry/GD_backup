@@ -2,7 +2,6 @@
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 #include "user.hpp"
-#include "dijkstra.hpp"
 #include <iostream>
 
 using namespace std;
@@ -66,6 +65,7 @@ int main(int argc, char **argv)
         cout << endl;
     }
     vector<array<int, 2>> sequence = user::point_order(map, treasure_pos);
-    imshow("result", src);
-    waitKey();
+
+    // imshow("result", src);
+    // waitKey();
 }

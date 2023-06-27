@@ -1,72 +1,84 @@
 #include "BFS.hpp"
 
-// 定义迷宫的大小
-const int ROWS = 21;
-const int COLS = 21;
+struct Point {
+    int row;
+    int col;
 
-// 定义方向：上、下、左、右
-const int dx[] = {-1, 1, 0, 0};
-const int dy[] = {0, 0, -1, 1};
+    Point(int r, int c) : row(r), col(c) {}
+};
 
-// BFS算法
-int shortestDistance(vector<vector<int>> &maze, pair<int, int> start, pair<int, int> end)
-{
-    // 创建队列用于BFS
-    queue<pair<int, int>> q;
-    q.push(start);
+bool isValid(int row, int col, int numRows, int numCols, const std::vector<std::vector<char>>& maze) {
+    return row >= 0 && row < numRows && col >= 0 && col < numCols && maze[row][col] != '#';
+}
 
-    // 创建visited数组用于记录节点是否已访问
-    vector<vector<bool>> visited(ROWS, vector<bool>(COLS, false));
-    visited[start.first][start.second] = true;
+int findShortestPath(const std::vector<std::vector<char>>& maze, const std::vector<Point>& targets, Point start) {
+    int numRows = maze.size();
+    int numCols = maze[0].size();
+    int numTargets = targets.size();
 
-    // 创建距离数组用于记录每个节点到起始节点的距离
-    vector<vector<int>> distance(ROWS, vector<int>(COLS, 0));
+    std::vector<std::vector<bool>> visited(numRows, std::vector<bool>(numCols, false));
 
-    while (!q.empty())
-    {
-        pair<int, int> current = q.front();
-        q.pop();
+    std::queue<Point> queue;
+    queue.push(start);
+    visited[start.row][start.col] = true;
 
-        // 如果当前节点是目标节点，返回距离
-        if (current == end)
-        {
-            return distance[current.first][current.second];
-        }
+    int steps = 0;
+    int targetsFound = 0;
 
-        // 在四个方向上尝试移动
-        for (int i = 0; i < 4; ++i)
-        {
-            int newRow = current.first + dx[i];
-            int newCol = current.second + dy[i];
+    while (!queue.empty()) {
+        int size = queue.size();
 
-            // 检查新位置是否在迷宫范围内且没有访问过，并且新位置不是墙（值为1）
-            if (newRow >= 0 && newRow < ROWS && newCol >= 0 && newCol < COLS && !visited[newRow][newCol] && maze[newRow][newCol] == 0)
-            {
-                q.push(make_pair(newRow, newCol));
-                visited[newRow][newCol] = true;
-                distance[newRow][newCol] = distance[current.first][current.second] + 1;
+        for (int i = 0; i < size; ++i) {
+            Point curr = queue.front();
+            queue.pop();
+
+            if (maze[curr.row][curr.col] == 'T') {
+                targetsFound++;
+                if (targetsFound == numTargets) {
+                    return steps;
+                }
+            }
+
+            // 尝试四个方向的移动：上、下、左、右
+            int dr[] = {-1, 1, 0, 0};
+            int dc[] = {0, 0, -1, 1};
+
+            for (int j = 0; j < 4; ++j) {
+                int newRow = curr.row + dr[j];
+                int newCol = curr.col + dc[j];
+
+                if (isValid(newRow, newCol, numRows, numCols, maze) && !visited[newRow][newCol]) {
+                    queue.push(Point(newRow, newCol));
+                    visited[newRow][newCol] = true;
+                }
             }
         }
+
+        steps++;
     }
 
-    // 如果无法到达目标节点，返回-1表示没有最短路径
+    // 如果无法找到所有目标点，则返回一个特殊值表示无解
     return -1;
 }
 
-int user::BFS(vector<vector<int>> maze)
-{
-    pair<int, int> start = make_pair(19, 0);
-    pair<int, int> end = make_pair(19, 3);
+int user::BFS() {
+    std::vector<std::vector<char>> maze = {
+        {'S', '.', '#', '#', '.', '.'},
+        {'.', '.', '.', '#', '.', '#'},
+        {'.', '#', '.', '.', '.', '#'},
+        {'.', '#', '#', '#', '.', '.'},
+        {'.', '#', 'T', '.', '#', '.'},
+    };
 
-    int distance = shortestDistance(maze, start, end);
+    std::vector<Point> targets = {Point(4, 2)};
+    Point start(0, 0);
 
-    if (distance == -1)
-    {
-        cout << "无法到达目标点" << endl;
-    }
-    else
-    {
-        cout << "最短距离为: " << distance << endl;
+    int shortestPathLength = findShortestPath(maze, targets, start);
+
+    if (shortestPathLength != -1) {
+        std::cout << "Shortest path length: " << shortestPathLength << std::endl;
+    } else {
+        std::cout << "No path found!" << std::endl;
     }
 
     return 0;

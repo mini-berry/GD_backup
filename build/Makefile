@@ -153,30 +153,6 @@ src/BFS.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/gd.dir/build.make CMakeFiles/gd.dir/src/BFS.cpp.s
 .PHONY : src/BFS.cpp.s
 
-src/dijkstra.o: src/dijkstra.cpp.o
-.PHONY : src/dijkstra.o
-
-# target to build an object file
-src/dijkstra.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/gd.dir/build.make CMakeFiles/gd.dir/src/dijkstra.cpp.o
-.PHONY : src/dijkstra.cpp.o
-
-src/dijkstra.i: src/dijkstra.cpp.i
-.PHONY : src/dijkstra.i
-
-# target to preprocess a source file
-src/dijkstra.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/gd.dir/build.make CMakeFiles/gd.dir/src/dijkstra.cpp.i
-.PHONY : src/dijkstra.cpp.i
-
-src/dijkstra.s: src/dijkstra.cpp.s
-.PHONY : src/dijkstra.s
-
-# target to generate assembly for a file
-src/dijkstra.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/gd.dir/build.make CMakeFiles/gd.dir/src/dijkstra.cpp.s
-.PHONY : src/dijkstra.cpp.s
-
 src/main.o: src/main.cpp.o
 .PHONY : src/main.o
 
@@ -237,9 +213,6 @@ help:
 	@echo "... src/BFS.o"
 	@echo "... src/BFS.i"
 	@echo "... src/BFS.s"
-	@echo "... src/dijkstra.o"
-	@echo "... src/dijkstra.i"
-	@echo "... src/dijkstra.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"
