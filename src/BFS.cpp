@@ -58,8 +58,63 @@ int length(int start, int end, vector<vector<int>> map, vector<array<int, 2>> tr
     }
     return -1;
 }
+vector<array<int, 2>> findShortestPath(vector<vector<int>> &map, array<int, 2> start, array<int, 2> end)
+{
+    int rows = map.size();
+    int cols = map[0].size();
 
-vector<int> user::BFS(vector<vector<int>> &map, vector<array<int, 2>> &treasure_pos)
+    vector<vector<bool>> visited(rows, vector<bool>(cols, false));
+    vector<vector<array<int, 2>>> parent(rows, vector<array<int, 2>>(cols));
+
+    queue<array<int, 2>> q;
+    q.push(start);
+    visited[start[0]][start[1]] = true;
+
+    int dx[] = {-1, 1, 0, 0};
+    int dy[] = {0, 0, -1, 1};
+
+    while (!q.empty())
+    {
+        array<int, 2> curr = q.front();
+        q.pop();
+
+        int x = curr[0];
+        int y = curr[1];
+
+        if (x == end[0] && y == end[1])
+        {
+            // 到达
+            vector<array<int, 2>> path;
+            while (!(x == start[0] && y == start[1]))
+            {
+                path.push_back({x, y});
+                array<int, 2> p = parent[x][y];
+                x = p[0];
+                y = p[1];
+            }
+            reverse(path.begin(), path.end());
+            return path;
+        }
+
+        for (int i = 0; i < 4; i++)
+        {
+            int newX = x + dx[i];
+            int newY = y + dy[i];
+
+            if (isValid(newX, newY, rows, cols, map) && !visited[newX][newY])
+            {
+                q.push({newX, newY});
+                visited[newX][newY] = true;
+                parent[newX][newY] = {x, y};
+            }
+        }
+    }
+
+    // If no path is found
+    return vector<array<int, 2>>();
+}
+
+vector<vector<array<int, 2>>> user::BFS(vector<vector<int>> &map, vector<array<int, 2>> &treasure_pos)
 {
     // 把起始点加入
     treasure_pos.insert(treasure_pos.begin(), {19, 0});
@@ -75,49 +130,74 @@ vector<int> user::BFS(vector<vector<int>> &map, vector<array<int, 2>> &treasure_
             graph.push_back(subgraph);
         }
     }
+    // 起始点不直接相连
     graph[0][treasure_pos.size() - 1] = -1;
     graph[treasure_pos.size() - 1][0] = -1;
+
+    // 排列组合
     vector<int> numbers;
     for (int i = 1; i < treasure_pos.size() - 1; i++)
     {
         numbers.push_back(i);
     }
+    // 排序，规范全排列输出
     sort(numbers.begin(), numbers.end());
-    // 输出初始排列
+    // 存储最短距离，循环次数
     int min_length = 0;
     int times = 0;
     vector<int> min_order;
-    
+
     do
     {
         vector<int> order;
+        // 存储每次排列
         for (int number : numbers)
         {
             order.push_back(number);
         }
-        // 0到1
+        // 添加0到1的距离
         int sum_length = graph[0][order[0]];
+        // 添加其他距离
         for (int i = 0; i < numbers.size() - 1; i++)
         {
             sum_length += graph[order[i]][order[i + 1]];
         }
+        // 添加终点距离
         sum_length += graph[order[numbers.size() - 1]][treasure_pos.size() - 1];
+        // 存储第一次
         if (min_length == 0)
         {
             min_length = sum_length;
             min_order = order;
         }
+        // 存储更小的
         if (min_length > sum_length)
         {
             min_length = sum_length;
             min_order = order;
         }
+        // 循环太多次就不循环了
         if (times++ > 600000)
             break;
     } while (next_permutation(numbers.begin(), numbers.end()));
     cout << "最短路径为:" << min_length << " ";
     cout << "循环次数:" << times << endl;
+
+    // 输出序列
+    cout << "最短路径: ";
     for (int i = 0; i < min_order.size(); i++)
         cout << min_order[i] << " ";
-    return min_order;
+    cout << endl;
+
+    vector<vector<array<int, 2>>> shortest_path_series;
+    shortest_path_series.push_back(findShortestPath(map, treasure_pos[0], treasure_pos[min_order[0]]));
+    // treasure_pos维数为n+2，min_order维数为n
+    // 最后两路径为n-2到n-1
+    for (int i = 0; i < min_order.size() - 1; i++)
+    {
+        vector<array<int, 2>> shortest_path = findShortestPath(map, treasure_pos[min_order[i]], treasure_pos[min_order[i + 1]]);
+        shortest_path_series.push_back(shortest_path);
+    }
+    shortest_path_series.push_back(findShortestPath(map, treasure_pos[min_order.size()], treasure_pos[min_order.size() + 1]));
+    return shortest_path_series;
 }

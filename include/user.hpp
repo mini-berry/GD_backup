@@ -16,6 +16,6 @@ namespace user
     void generate_map(vector<vector<int>> &map);
     void find_treasure(Mat &src, Mat &src_without_treasure, vector<array<int, 2>> &treasure_pos);
     void block_scan(Mat &src_without_treasure, vector<vector<int>> &map);
-    vector<int> point_order(vector<vector<int>> &map, vector<array<int, 2>> &treasure_pos);
+    vector<vector<array<int,2>>> point_order(vector<vector<int>> &map, vector<array<int, 2>> &treasure_pos);
 }
 #endif

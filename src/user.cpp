@@ -78,10 +78,10 @@ void user::generate_map(vector<vector<int>> &map)
 {
     for (int i = 0; i < 21; i++)
     {
-        map[0][i] = 1;
-        map[i][0] = 1;
-        map[20][i] = 1;
-        map[i][20] = 1;
+        map[0][i] = -1;
+        map[i][0] = -1;
+        map[20][i] = -1;
+        map[i][20] = -1;
     }
     map[1][20] = 0;
     map[19][0] = 0;
@@ -122,18 +122,17 @@ void user::block_scan(Mat &src_without_treasure, vector<vector<int>> &map)
             if (contours.size() == 1)
             {
                 if (contourArea(contours[0]) < 1400)
-                    map[i + 1][j + 1] = 1;
+                    map[i + 1][j + 1] = -1;
             }
             else
             {
-                map[i + 1][j + 1] = 1;
+                map[i + 1][j + 1] = -1;
             }
         }
     }
-    cout << endl;
 }
 
-vector<int> user::point_order(vector<vector<int>> &map, vector<array<int, 2>> &treasure_pos)
+vector<vector<array<int, 2>>> user::point_order(vector<vector<int>> &map, vector<array<int, 2>> &treasure_pos)
 {
     return (user::BFS(map, treasure_pos));
 }

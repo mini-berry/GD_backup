@@ -11,6 +11,6 @@ using namespace std;
 
 namespace user
 {
-    vector<int> BFS(vector<vector<int>> &map, vector<array<int, 2>> &treasure_pos);
+    vector<vector<array<int, 2>>> BFS(vector<vector<int>> &map, vector<array<int, 2>> &treasure_pos);
 }
 #endif

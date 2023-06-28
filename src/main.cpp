@@ -6,17 +6,52 @@
 
 using namespace std;
 using namespace cv;
+void show_map(vector<vector<int>> &map, vector<array<int, 2>> point_series)
+{
+    for (int i = 0; i < 21; i++)
+    {
+        for (int j = 0; j < 21; j++)
+        {
+            int flag = 0;
+            for (int k = 0; k < point_series.size(); k++)
+            {
+                if (i == point_series[k][0] & j == point_series[k][1])
+                {
+                    cout << "□ ";
+                    flag = 1;
+                }
+            }
+
+            if (flag == 0)
+            {
+                switch (map[i][j])
+                {
+                case 0:
+                    cout << "  ";
+                    break;
+                case -1:
+                    cout << "■ ";
+                    break;
+                default:
+                    cout << "  ";
+                    break;
+                }
+            }
+        }
+        cout << endl;
+    }
+}
 
 int main(int argc, char **argv)
 {
-    Mat src = imread("/home/lane/gd/bin/map.png");
+    Mat src = imread("/home/lane/gd/bin/map2.png");
     resize(src, src, Size(1000, 1000));
 
     while (user::perspective_fix(src) != 0)
     {
         cout << "getting new img" << endl;
         waitKey();
-        src = imread("/home/lane/gd/bin/map.png");
+        src = imread("/home/lane/gd/bin/map2.png");
         resize(src, src, Size(1000, 1000));
     }
 
@@ -33,40 +68,7 @@ int main(int argc, char **argv)
     user::find_treasure(src, src_without_treasure, treasure_pos);
 
     user::block_scan(src_without_treasure, map);
-
-    for (int i = 0; i < 21; i++)
-    {
-        for (int j = 0; j < 21; j++)
-        {
-            int flag = 0;
-            for (int k = 0; k < treasure_pos.size(); k++)
-            {
-                if (i == treasure_pos[k][0] & j == treasure_pos[k][1])
-                {
-                    cout << "□ ";
-                    flag = 1;
-                }
-            }
-
-            if (flag == 0)
-            {
-                switch (map[i][j])
-                {
-                case 0:
-                    cout << "  ";
-                    break;
-                case 1:
-                    cout << "■ ";
-                    break;
-                default:
-                    cout << "  ";
-                    break;
-                }
-            }
-        }
-        cout << endl;
-    }
-    vector<int> sequence = user::point_order(map, treasure_pos);
-    imshow("result", src);
-    waitKey();
+    vector<vector<array<int, 2>>> sequence = user::point_order(map, treasure_pos);
+    // imshow("result", src);
+    // waitKey();
 }
