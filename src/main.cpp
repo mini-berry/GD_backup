@@ -68,7 +68,7 @@ int main(int argc, char **argv)
     user::find_treasure(src, src_without_treasure, treasure_pos);
 
     user::block_scan(src_without_treasure, map);
-    vector<vector<array<int, 2>>> sequence = user::point_order(map, treasure_pos);
+    vector<vector<array<int, 2>>> path = user::point_order(map, treasure_pos);
     // imshow("result", src);
     // waitKey();
 }
