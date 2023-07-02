@@ -49,26 +49,27 @@ void show_map(vector<vector<int>> &map, vector<array<int, 2>> point_series)
     }
 }
 
-Mat capture()
+Mat capture(VideoCapture &cap)
 {
 
     Mat src;
-    while (src.empty())
-    {
-        src = imread("/home/lane/gd/bin/map2.png");
-    }
+    cap >> src;
+    // while (src.empty())
+    // {
+    //     src = imread("/home/lane/gd/bin/map2.png");
+    // }
     return src;
 }
-void try_to_generate()
+void try_to_generate(VideoCapture &cap)
 {
     do
     {
-        src = capture();
+        src = capture(cap);
         imshow("capture", src);
         waitKey(1);
         while (user::perspective_fix(src) != 0)
         {
-            src = capture();
+            src = capture(cap);
         }
         resize(src, src, Size(1000, 1000));
         int margin = 115;
@@ -86,9 +87,24 @@ void try_to_generate()
 
 int main(int argc, char **argv)
 {
+    VideoCapture cap; // 声明相机捕获对象
+
+    // 设置编码格式
+    cap.set(cv::CAP_PROP_FOURCC, cv::VideoWriter::fourcc('M', 'J', 'P', 'G'));
+    cap.set(cv::CAP_PROP_FRAME_WIDTH, 640);  // 图像的宽
+    cap.set(cv::CAP_PROP_FRAME_HEIGHT, 480); // 图像的高
+    int deviceID = 0;                        // 相机设备号
+    cap.open(deviceID);                      // 打开相机
+
+    if (!cap.isOpened()) // 判断相机是否打开
+    {
+        std::cerr << "ERROR!! Unable to open camera\n";
+        return -1;
+    }
+
     do
     {
-        try_to_generate();
+        try_to_generate(cap);
     } while (0);
     // 按A确认，按B重新拍摄
     array<int, 2> speical_point;
@@ -120,5 +136,4 @@ int main(int argc, char **argv)
     cout << endl;
     vector<vector<array<int, 2>>> path_0 = user::path(map, treasure_pos_filtered, min_order, {19, 0});
     vector<vector<vector<array<int, 2>>>> path_1 = user::path_ex(map, treasure_pos_filtered, min_order, treasure_pos_extended);
-    show_map(map, path_1[0][0]);
 }
