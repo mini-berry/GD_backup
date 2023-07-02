@@ -129,30 +129,6 @@ gd/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/gd.dir/build.make CMakeFiles/gd.dir/build
 .PHONY : gd/fast
 
-src/BFS.o: src/BFS.cpp.o
-.PHONY : src/BFS.o
-
-# target to build an object file
-src/BFS.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/gd.dir/build.make CMakeFiles/gd.dir/src/BFS.cpp.o
-.PHONY : src/BFS.cpp.o
-
-src/BFS.i: src/BFS.cpp.i
-.PHONY : src/BFS.i
-
-# target to preprocess a source file
-src/BFS.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/gd.dir/build.make CMakeFiles/gd.dir/src/BFS.cpp.i
-.PHONY : src/BFS.cpp.i
-
-src/BFS.s: src/BFS.cpp.s
-.PHONY : src/BFS.s
-
-# target to generate assembly for a file
-src/BFS.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/gd.dir/build.make CMakeFiles/gd.dir/src/BFS.cpp.s
-.PHONY : src/BFS.cpp.s
-
 src/main.o: src/main.cpp.o
 .PHONY : src/main.o
 
@@ -210,9 +186,6 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... gd"
-	@echo "... src/BFS.o"
-	@echo "... src/BFS.i"
-	@echo "... src/BFS.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"

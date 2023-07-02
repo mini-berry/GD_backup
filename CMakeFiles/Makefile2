@@ -81,12 +81,12 @@ clean: CMakeFiles/gd.dir/clean
 CMakeFiles/gd.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/gd.dir/build.make CMakeFiles/gd.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/gd.dir/build.make CMakeFiles/gd.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/lane/gd/CMakeFiles --progress-num=1,2,3,4 "Built target gd"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/lane/gd/CMakeFiles --progress-num=1,2,3 "Built target gd"
 .PHONY : CMakeFiles/gd.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/gd.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/lane/gd/CMakeFiles 4
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/lane/gd/CMakeFiles 3
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/gd.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/lane/gd/CMakeFiles 0
 .PHONY : CMakeFiles/gd.dir/rule

@@ -14,8 +14,11 @@ namespace user
 {
     int perspective_fix(Mat &src);
     void generate_map(vector<vector<int>> &map);
-    void find_treasure(Mat &src, Mat &src_without_treasure, vector<array<int, 2>> &treasure_pos);
+    int find_treasure(Mat &src, Mat &src_without_treasure, vector<array<int, 2>> &treasure_pos);
     void block_scan(Mat &src_without_treasure, vector<vector<int>> &map);
-    vector<vector<array<int,2>>> point_order(vector<vector<int>> &map, vector<array<int, 2>> &treasure_pos);
+    vector<vector<array<int, 2>>> treasure_extend(vector<array<int, 2>> &treasure_pos_filtered, array<int, 2> &special_point);
+    vector<int> sort(vector<vector<int>> &map, vector<array<int, 2>> &treasure_pos_filtered, array<int, 2> start);
+    vector<vector<array<int, 2>>> path(vector<vector<int>> &map, vector<array<int, 2>> &treasure_pos_filtered, vector<int> &min_order, array<int, 2> start);
+    vector<vector<vector<array<int, 2>>>> path_ex(vector<vector<int>> &map, vector<array<int, 2>> &treasure_pos_filtered, vector<int> &min_order, vector<vector<array<int, 2>>> &treasure_pos_extended);
 }
 #endif

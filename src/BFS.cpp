@@ -80,42 +80,6 @@ int length(int start, int end, vector<vector<int>> &map, vector<array<int, 2>> &
     return -1;
 }
 
-void show_map_BFS(vector<vector<int>> &map, vector<array<int, 2>> point_series)
-{
-    for (int i = 0; i < 21; i++)
-    {
-        for (int j = 0; j < 21; j++)
-        {
-            int flag = 0;
-            for (int k = 0; k < point_series.size(); k++)
-            {
-                if (i == point_series[k][0] & j == point_series[k][1])
-                {
-                    cout << "□ ";
-                    flag = 1;
-                }
-            }
-
-            if (flag == 0)
-            {
-                switch (map[i][j])
-                {
-                case 0:
-                    cout << "  ";
-                    break;
-                case -1:
-                    cout << "■ ";
-                    break;
-                default:
-                    cout << "  ";
-                    break;
-                }
-            }
-        }
-        cout << endl;
-    }
-}
-
 vector<array<int, 2>> findShortestPath(vector<vector<int>> &map, array<int, 2> &start, array<int, 2> &end)
 {
     int rows = map.size();
@@ -497,6 +461,5 @@ vector<vector<array<int, 2>>> user::BFS(vector<vector<int>> &map, vector<array<i
             cout << turn_to_v[i];
         cout << endl;
     }
-    show_map_BFS(map, shortest_path_series[8]);
     return shortest_path_series;
 }

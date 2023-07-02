@@ -11,7 +11,7 @@ find_package(OpenCV REQUIRED)
 # directory of opencv headers
 include_directories(${OpenCV_INCLUDE_DIRS} ${gd_SOURCE_DIR}/include)
 # name of executable file and path of source file
-add_executable(gd src/main.cpp src/user.cpp src/BFS.cpp)
+add_executable(gd src/main.cpp src/user.cpp)
 # directory of opencv library
 link_directories(${OpenCV_LIBRARY_DIRS})
 # opencv libraries
