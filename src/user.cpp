@@ -7,12 +7,16 @@ bool isValid(int x, int y, int rows, int cols, const std::vector<std::vector<int
 }
 namespace direction
 {
-    enum
+    enum direction_num
     {
-        up = 0,
-        down = 1,
+        up = 3,
+        down = 4,
         left = 2,
-        right = 3,
+        right = 1,
+        mup = 7,
+        mdown = 8,
+        mleft = 6,
+        mright = 5
     };
 }
 
@@ -84,20 +88,15 @@ Point2f get_center_point(vector<T> contours_i)
 }
 int user::perspective_fix(Mat &src)
 {
-    Mat src_without_treasure;
-    cvtColor(src, src_without_treasure, COLOR_BGR2GRAY);
-    threshold(src_without_treasure, src_without_treasure, 100, 255, THRESH_BINARY);
-    morphologyEx(src_without_treasure, src_without_treasure, MORPH_CLOSE, getStructuringElement(MORPH_RECT, Size(3, 3)));
-
     vector<vector<Point>> contours;
     vector<Vec4i> hierarchy;
-    findContours(src_without_treasure, contours, hierarchy, RETR_TREE, CHAIN_APPROX_SIMPLE);
+    findContours(src, contours, hierarchy, RETR_TREE, CHAIN_APPROX_SIMPLE);
 
     vector<Point2f> track_point;
     vector<Point2f> center_point;
     for (int i = 0; i < hierarchy.size(); i++)
     {
-        if (hierarchy[i][3] == 0 & hierarchy[hierarchy[hierarchy[i][2]][2]][0] == -1)
+        if (hierarchy[i][3] == 0 && hierarchy[i][2] != -1 && hierarchy[hierarchy[i][2]][2] != -1 && hierarchy[hierarchy[hierarchy[i][2]][2]][0] == -1)
         {
             track_point.push_back(get_center_point(contours[hierarchy[hierarchy[i][2]][2]]));
         }
@@ -105,7 +104,6 @@ int user::perspective_fix(Mat &src)
 
     if (track_point.size() != 4)
     {
-        cout << "found" << track_point.size() << "track points" << endl;
         return -1;
     }
 
@@ -145,39 +143,41 @@ int user::perspective_fix(Mat &src)
 }
 void user::generate_map(vector<vector<int>> &map)
 {
-    for (int i = 0; i < 21; i++)
-    {
-        for (int j = 0; j < 21; j++)
-        {
-            map[i][j] = 0;
-        }
-    }
-    for (int i = 0; i < 21; i++)
-    {
-        map[0][i] = -1;
-        map[i][0] = -1;
-        map[20][i] = -1;
-        map[i][20] = -1;
-    }
-    map[1][20] = 0;
-    map[19][0] = 0;
+    map = {{-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+           {-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0},
+           {-1, 0, -1, 0, -1, -1, -1, 0, -1, 0, -1, 0, -1, -1, -1, 0, -1, 0, -1, -1, -1},
+           {-1, 0, -1, 0, -1, 0, 0, 0, -1, 0, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, -1},
+           {-1, 0, -1, -1, -1, 0, -1, -1, -1, 0, -1, -1, -1, 0, -1, 0, -1, -1, -1, 0, -1},
+           {-1, 0, -1, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, -1},
+           {-1, -1, -1, 0, -1, 0, -1, 0, -1, -1, -1, -1, -1, 0, -1, -1, -1, 0, -1, -1, -1},
+           {-1, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, -1, 0, -1},
+           {-1, 0, -1, -1, -1, 0, -1, 0, -1, -1, -1, -1, -1, -1, -1, 0, -1, -1, -1, 0, -1},
+           {-1, 0, -1, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1},
+           {-1, 0, -1, -1, -1, -1, -1, 0, -1, -1, -1, -1, -1, 0, -1, -1, -1, -1, -1, 0, -1},
+           {-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0, -1, 0, -1},
+           {-1, 0, -1, -1, -1, 0, -1, -1, -1, -1, -1, -1, -1, 0, -1, 0, -1, -1, -1, 0, -1},
+           {-1, 0, -1, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, -1},
+           {-1, -1, -1, 0, -1, -1, -1, 0, -1, -1, -1, -1, -1, 0, -1, 0, -1, 0, -1, -1, -1},
+           {-1, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, -1, 0, -1},
+           {-1, 0, -1, -1, -1, 0, -1, 0, -1, -1, -1, 0, -1, -1, -1, 0, -1, -1, -1, 0, -1},
+           {-1, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, 0, -1, 0, 0, 0, -1, 0, -1, 0, -1},
+           {-1, -1, -1, 0, -1, 0, -1, -1, -1, 0, -1, 0, -1, 0, -1, -1, -1, 0, -1, 0, -1},
+           {0, 0, 0, 0, -1, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1},
+           {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1}};
 }
 int user::find_treasure(Mat &src, Mat &src_without_treasure, vector<array<int, 2>> &treasure_pos)
 {
     resize(src, src, Size(800, 800));
 
-    cvtColor(src, src_without_treasure, COLOR_BGR2GRAY);
-    threshold(src_without_treasure, src_without_treasure, 100, 255, THRESH_BINARY);
-    morphologyEx(src_without_treasure, src_without_treasure, MORPH_CLOSE, getStructuringElement(MORPH_RECT, Size(3, 3)));
-
+    src_without_treasure = src.clone();
     vector<vector<Point>> contours;
     vector<Vec4i> hierarchy;
-    findContours(src_without_treasure, contours, hierarchy, RETR_TREE, CHAIN_APPROX_SIMPLE);
+    findContours(src, contours, hierarchy, RETR_TREE, CHAIN_APPROX_SIMPLE);
+
     for (int i = 0; i < hierarchy.size(); i++)
     {
-        if (boundingRect(contours[i]).width<47 & contourArea(contours[i]) < 900 & contourArea(contours[i])> 800 & ((float)boundingRect(contours[i]).width) / ((float)boundingRect(contours[i]).height) < 1.1 & ((float)boundingRect(contours[i]).width) / ((float)boundingRect(contours[i]).height) > 0.9)
+        if (boundingRect(contours[i]).width < 47 && contourArea(contours[i]) < 1700 && contourArea(contours[i]) > 800 && ((float)boundingRect(contours[i]).width) / ((float)boundingRect(contours[i]).height) < 1.1 & ((float)boundingRect(contours[i]).width) / ((float)boundingRect(contours[i]).height) > 0.9)
         {
-            drawContours(src, contours, i, Scalar(0, 0, 255), 2);
             drawContours(src_without_treasure, contours, i, Scalar(255, 255, 255), -1);
             array<int, 2> pos = {((int)get_center_point(contours[i]).y) / 80 * 2 + 1, ((int)get_center_point(contours[i]).x) / 80 * 2 + 1};
             treasure_pos.push_back(pos);
@@ -211,14 +211,16 @@ vector<vector<array<int, 2>>> user::treasure_extend(vector<array<int, 2>> &treas
 {
     vector<vector<array<int, 2>>> treasure_pos_extended_series;
 
-    for (int i = 0; i < 10; i++)
+    for (int i = 0; i < 16; i++)
     {
         vector<array<int, 2>> treasure_pos_extended;
         // 0为我方宝藏，1为我方伪宝藏，2为对方宝藏，3为对方伪宝藏
         switch (i)
         {
-            // 我方为00时，2、3，002，003
-            // 我方为0时，23、22，023，022
+            // 我方为00时,2\3;002，003
+            // 我方为0时,23\22;023,022
+            // 我方为01时,012
+            // 我方为1时,22;122
         case 0:
             // 仅去1对面
             // 200
@@ -235,24 +237,24 @@ vector<vector<array<int, 2>>> user::treasure_extend(vector<array<int, 2>> &treas
             treasure_pos_extended.push_back({20 - treasure_pos_filtered[2][0], 20 - treasure_pos_filtered[2][1]});
             break;
         case 3:
-            // 仅去4对面
+            // 仅去special对面
             // 003,030,300
             treasure_pos_extended.push_back({20 - special_point[0], 20 - special_point[1]});
             break;
         case 4:
-            // 去special和1对面
+            // 去special;1对面
             // 203,230
             treasure_pos_extended.push_back({special_point[0], special_point[1]});
             treasure_pos_extended.push_back({20 - treasure_pos_filtered[0][0], 20 - treasure_pos_filtered[0][1]});
             break;
         case 5:
-            // 去special和2对面
-            // 023,320
+            // 去special;2对面
+            // 023,320,
             treasure_pos_extended.push_back({special_point[0], special_point[1]});
             treasure_pos_extended.push_back({20 - treasure_pos_filtered[1][0], 20 - treasure_pos_filtered[1][1]});
             break;
         case 6:
-            // 去special和3对面
+            // 去special;3对面
             // 302,032
             treasure_pos_extended.push_back({special_point[0], special_point[1]});
             treasure_pos_extended.push_back({20 - treasure_pos_filtered[2][0], 20 - treasure_pos_filtered[2][1]});
@@ -274,6 +276,45 @@ vector<vector<array<int, 2>>> user::treasure_extend(vector<array<int, 2>> &treas
             // 022
             treasure_pos_extended.push_back({20 - treasure_pos_filtered[1][0], 20 - treasure_pos_filtered[1][1]});
             treasure_pos_extended.push_back({20 - treasure_pos_filtered[2][0], 20 - treasure_pos_filtered[2][1]});
+            break;
+        case 10:
+            // 去sp和1对面
+            // 210,201
+            treasure_pos_extended.push_back({20 - special_point[0], 20 - special_point[1]});
+            treasure_pos_extended.push_back({20 - treasure_pos_filtered[0][0], 20 - treasure_pos_filtered[0][1]});
+            break;
+        case 11:
+            // 去sp和2对面
+            // 021,120
+            treasure_pos_extended.push_back({20 - special_point[0], 20 - special_point[1]});
+            treasure_pos_extended.push_back({20 - treasure_pos_filtered[1][0], 20 - treasure_pos_filtered[1][1]});
+            break;
+        case 12:
+            // 去sp和3对面
+            // 012,102
+            treasure_pos_extended.push_back({20 - special_point[0], 20 - special_point[1]});
+            treasure_pos_extended.push_back({20 - treasure_pos_filtered[2][0], 20 - treasure_pos_filtered[2][1]});
+            break;
+        case 13:
+            // 去sp;2和3对面
+            // 122
+            treasure_pos_extended.push_back({special_point[0], special_point[1]});
+            treasure_pos_extended.push_back({20 - treasure_pos_filtered[1][0], 20 - treasure_pos_filtered[1][1]});
+            treasure_pos_extended.push_back({20 - treasure_pos_filtered[2][0], 20 - treasure_pos_filtered[2][1]});
+            break;
+        case 14:
+            // 去sp;去1和3对面
+            // 212
+            treasure_pos_extended.push_back({special_point[0], special_point[1]});
+            treasure_pos_extended.push_back({20 - treasure_pos_filtered[0][0], 20 - treasure_pos_filtered[0][1]});
+            treasure_pos_extended.push_back({20 - treasure_pos_filtered[2][0], 20 - treasure_pos_filtered[2][1]});
+            break;
+        case 15:
+            // 去sp;去1和2对面
+            // 221
+            treasure_pos_extended.push_back({special_point[0], special_point[1]});
+            treasure_pos_extended.push_back({20 - treasure_pos_filtered[0][0], 20 - treasure_pos_filtered[0][1]});
+            treasure_pos_extended.push_back({20 - treasure_pos_filtered[1][0], 20 - treasure_pos_filtered[1][1]});
             break;
         }
         treasure_pos_extended_series.push_back(treasure_pos_extended);
@@ -351,7 +392,9 @@ vector<int> user::sort(vector<vector<int>> &map, vector<array<int, 2>> &treasure
         {
             vector<int> subgraph;
             for (int j = 0; j < path_pass_point.size(); j++)
+            {
                 subgraph.push_back(length(i, j, map, path_pass_point));
+            }
             graph.push_back(subgraph);
         }
     }
@@ -362,13 +405,12 @@ vector<int> user::sort(vector<vector<int>> &map, vector<array<int, 2>> &treasure
         numbers.push_back(i);
     }
     // 排序，规范全排列输出
-    sort(numbers.begin(), numbers.end());
+    std::sort(numbers.begin(), numbers.end());
 
     // 存储最短距离，循环次数
     int min_length = 0;
     int times = 0;
     vector<int> min_order;
-
     do
     {
         vector<int> order;
@@ -380,9 +422,12 @@ vector<int> user::sort(vector<vector<int>> &map, vector<array<int, 2>> &treasure
         // 添加0到1的距离
         int sum_length = graph[0][order[0]];
         // 添加其他距离
-        for (int i = 0; i < numbers.size() - 1; i++)
+        if (numbers.size() > 1)
         {
-            sum_length += graph[order[i]][order[i + 1]];
+            for (int i = 0; i < numbers.size() - 1; i++)
+            {
+                sum_length += graph[order[i]][order[i + 1]];
+            }
         }
         // 存储第一次
         if (min_length == 0)
@@ -403,6 +448,77 @@ vector<int> user::sort(vector<vector<int>> &map, vector<array<int, 2>> &treasure
     return min_order;
 }
 
+vector<int> user::sort_ex(vector<vector<int>> &map, vector<array<int, 2>> &treasure_pos_filtered, array<int, 2> start, array<int, 2> end)
+{
+    vector<array<int, 2>> path_pass_point;
+    // 在开始插入起始点
+    path_pass_point.push_back(start);
+    for (int i = 0; i < treasure_pos_filtered.size(); i++)
+        path_pass_point.push_back(treasure_pos_filtered[i]);
+    path_pass_point.push_back(end);
+    // 形成遍历距离表
+    vector<vector<int>> graph;
+    {
+        for (int i = 0; i < path_pass_point.size(); i++)
+        {
+            vector<int> subgraph;
+            for (int j = 0; j < path_pass_point.size(); j++)
+            {
+                subgraph.push_back(length(i, j, map, path_pass_point));
+            }
+            graph.push_back(subgraph);
+        }
+    }
+    // 存储所有经过点
+    vector<int> numbers;
+    for (int i = 1; i < path_pass_point.size() - 1; i++)
+    {
+        numbers.push_back(i);
+    }
+    // 排序，规范全排列输出
+    std::sort(numbers.begin(), numbers.end());
+
+    // 存储最短距离，循环次数
+    int min_length = 0;
+    int times = 0;
+    vector<int> min_order;
+    do
+    {
+        vector<int> order;
+        // 存储每次排列
+        for (int number : numbers)
+        {
+            order.push_back(number);
+        }
+        // 添加0到1的距离
+        int sum_length = graph[0][order[0]];
+        // 添加其他距离
+        if (numbers.size() > 1)
+        {
+            for (int i = 0; i < numbers.size() - 1; i++)
+            {
+                sum_length += graph[order[i]][order[i + 1]];
+            }
+        }
+        sum_length += graph[order.back()][path_pass_point.size() - 1];
+        // 存储第一次
+        if (min_length == 0)
+        {
+            min_length = sum_length;
+            min_order = order;
+        }
+        // 存储更小的
+        if (min_length > sum_length)
+        {
+            min_length = sum_length;
+            min_order = order;
+        }
+        // 循环太多次就不循环了
+        if (times++ > 600000)
+            break;
+    } while (next_permutation(numbers.begin(), numbers.end()));
+    return min_order;
+}
 vector<vector<array<int, 2>>> user::path(vector<vector<int>> &map, vector<array<int, 2>> &treasure_pos_filtered, vector<int> &min_order, array<int, 2> start)
 {
     vector<array<int, 2>> path_pass_point;
@@ -422,16 +538,138 @@ vector<vector<array<int, 2>>> user::path(vector<vector<int>> &map, vector<array<
     return path_series;
 }
 
-vector<vector<vector<array<int, 2>>>> user::path_ex(vector<vector<int>> &map, vector<array<int, 2>> &treasure_pos_filtered, vector<int> &min_order, vector<vector<array<int, 2>>> &treasure_pos_extended)
+vector<vector<array<int, 2>>> user::path_ex(vector<vector<int>> &map_z, vector<array<int, 2>> &treasure_pos_extended, vector<int> &min_order_ex, array<int, 2> start, array<int, 2> end)
 {
-    vector<vector<vector<array<int, 2>>>> path_ex_series;
-    for (int i = 0; i < treasure_pos_extended.size(); i++)
+    vector<vector<array<int, 2>>> path_series;
+    vector<array<int, 2>> path_pass_point;
+    path_pass_point.push_back(start);
+    for (int i : min_order_ex)
     {
-        vector<int> min_order_ex;
-        min_order_ex = user::sort(map, treasure_pos_extended[i], treasure_pos_filtered[min_order[min_order.size() - 1] - 1]);
-        vector<vector<array<int, 2>>> path_ex_ele = user::path(map, treasure_pos_extended[i], min_order_ex, treasure_pos_filtered[min_order[min_order.size() - 1] - 1]);
-        path_ex_ele.push_back(findShortestPath(map, treasure_pos_extended[i][min_order_ex[min_order_ex.size() - 1] - 1], {1, 20}));
-        path_ex_series.push_back(path_ex_ele);
+        path_pass_point.push_back(treasure_pos_extended[i - 1]);
     }
-    return path_ex_series;
+    path_pass_point.push_back(end);
+
+    for (int i = 0; i < path_pass_point.size() - 1; i++)
+    {
+        vector<array<int, 2>> path;
+        path = findShortestPath(map_z, path_pass_point[i], path_pass_point[i + 1]);
+        path_series.push_back(path);
+    }
+    return path_series;
+}
+
+vector<int> user::path_solver(vector<array<int, 2>> &path, vector<vector<int>> &map)
+{
+    vector<int> turn_to;
+    int rows = map.size();
+    int cols = map[0].size();
+    int dx[] = {0, 1, 0, -1, 0};
+    int dy[] = {1, 0, -1, 0, 1};
+    for (int i = 0; i < path.size() - 1; i++)
+    {
+        for (int j = 0; j < 4; j++)
+        {
+            int newX1 = path[i][0] + dx[j];
+            int newY1 = path[i][1] + dy[j];
+            int newX2 = path[i][0] + dx[j + 1];
+            int newY2 = path[i][1] + dy[j + 1];
+            if (i == path.size() - 2)
+            {
+                turn_to.pop_back();
+                if (path[i][0] - path[i + 1][0] == 1)
+                    turn_to.push_back(direction::mup);
+                if (path[i][0] - path[i + 1][0] == -1)
+                    turn_to.push_back(direction::mdown);
+                if (path[i][1] - path[i + 1][1] == 1)
+                    turn_to.push_back(direction::mleft);
+                if (path[i][1] - path[i + 1][1] == -1)
+                    turn_to.push_back(direction::mright);
+                break;
+            }
+            else if (i != 0 && (isValid(newX1, newY1, rows, cols, map) && isValid(newX2, newY2, rows, cols, map)))
+            {
+                if (path[i][0] - path[i + 1][0] == 1)
+                    turn_to.push_back(direction::up);
+                if (path[i][0] - path[i + 1][0] == -1)
+                    turn_to.push_back(direction::down);
+                if (path[i][1] - path[i + 1][1] == 1)
+                    turn_to.push_back(direction::left);
+                if (path[i][1] - path[i + 1][1] == -1)
+                    turn_to.push_back(direction::right);
+                break;
+            }
+        }
+    }
+    // for (int i = 0; i < turn_to.size(); i++)
+    //     cout << turn_to[i];
+    // cout << endl;
+    return turn_to;
+}
+
+vector<int> user::path_solver_ex(vector<array<int, 2>> &path, vector<vector<int>> &map)
+{
+    vector<int> turn_to;
+    int rows = map.size();
+    int cols = map[0].size();
+    int dx[] = {0, 1, 0, -1, 0};
+    int dy[] = {1, 0, -1, 0, 1};
+    if (path[0] == array<int, 2>({5, 9}) || path[0] == array<int, 2>({15, 11}))
+    {
+        if (path[0][0] - path[1][0] == 1)
+            turn_to.push_back(direction::up);
+        if (path[0][0] - path[1][0] == -1)
+            turn_to.push_back(direction::down);
+        if (path[0][1] - path[1][1] == 1)
+            turn_to.push_back(direction::left);
+        if (path[0][1] - path[1][1] == -1)
+            turn_to.push_back(direction::right);
+    }
+    for (int i = 0; i < path.size() - 1; i++)
+    {
+        for (int j = 0; j < 4; j++)
+        {
+            int newX1 = path[i][0] + dx[j];
+            int newY1 = path[i][1] + dy[j];
+            int newX2 = path[i][0] + dx[j + 1];
+            int newY2 = path[i][1] + dy[j + 1];
+            if (i != 0 && (isValid(newX1, newY1, rows, cols, map) && isValid(newX2, newY2, rows, cols, map)))
+            {
+                if (path[i][0] - path[i + 1][0] == 1)
+                    turn_to.push_back(direction::up);
+                if (path[i][0] - path[i + 1][0] == -1)
+                    turn_to.push_back(direction::down);
+                if (path[i][1] - path[i + 1][1] == 1)
+                    turn_to.push_back(direction::left);
+                if (path[i][1] - path[i + 1][1] == -1)
+                    turn_to.push_back(direction::right);
+                break;
+            }
+        }
+    }
+    if (path.back() != array<int, 2>({5, 9}) && path.back() != array<int, 2>({15, 11}))
+    {
+        switch (turn_to.back())
+        {
+        case direction::up:
+            turn_to.pop_back();
+            turn_to.push_back(direction::mup);
+            break;
+        case direction::down:
+            turn_to.pop_back();
+            turn_to.push_back(direction::mdown);
+            break;
+        case direction::left:
+            turn_to.pop_back();
+            turn_to.push_back(direction::mleft);
+            break;
+        case direction::right:
+            turn_to.pop_back();
+            turn_to.push_back(direction::mright);
+            break;
+        }
+    }
+    // for (int i = 0; i < turn_to.size(); i++)
+    //     cout << turn_to[i];
+    // cout << endl;
+    return turn_to;
 }
